@@ -89,7 +89,6 @@ public class InputActionMapping : MonoBehaviour
 
         if (m_TargetPlane.Raycast(ray, out float distance))
         {
-            Debug.Log("Hit");
             m_Target = ray.GetPoint(distance);
         }
 
@@ -112,7 +111,7 @@ public class InputActionMapping : MonoBehaviour
         m_LocalForward = Vector3.Normalize(new Vector3(m_LocalForward.x, 0, m_LocalForward.z));
         m_LocalLeft = Vector3.Cross(m_LocalForward, Vector3.up).normalized;
 
-        // TODO figure out why x and z are swapped, and why x is negative
+        // m_MoveCache.y is Z-forward, m_MoveCache.x is right
         m_Move = (m_LocalForward * m_MoveCache.y) + (m_LocalLeft * -m_MoveCache.x);
     }
 
