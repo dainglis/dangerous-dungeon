@@ -1,12 +1,27 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public interface IEnemy
+{
+
+    public CharacterController Controller { get; }
+
+    public Action<IEnemy> OnDeath { get; set; }
+
+    public void Move();
+    public void Die();
+}
+
+
+public class Enemy : MonoBehaviour, IEnemy
 {
 
     [SerializeField] private CharacterController m_Controller;
     [SerializeField] private GameObject m_Target;
+    public CharacterController Controller => m_Controller;
 
+    public Action<IEnemy> OnDeath { get; set; }
 
     [Header("Movement Settings")]
     [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
@@ -16,7 +31,7 @@ public class Enemy : MonoBehaviour
         if (!m_Controller) { m_Controller = GetComponent<CharacterController>(); }
     }
 
-   
+
     protected virtual void Start()
     {
         // Inject this externally through EnemyManager
@@ -39,11 +54,9 @@ public class Enemy : MonoBehaviour
 
     public virtual void Move()
     {
-        if (!m_Target) { return; }
+        if (!m_Target || !m_Controller.enabled) { return; }
 
         transform.LookAt(m_Target.transform.position);
-
-        if (!m_Controller.enabled) { return; }
 
         Vector3 directionVector = m_MovementSpeed * Time.deltaTime * Vector3.Normalize(m_Target.transform.position - transform.position);
         m_Controller.Move(directionVector);
@@ -58,7 +71,10 @@ public class Enemy : MonoBehaviour
     protected virtual IEnumerator DieCoroutine()
     {
         // Could play a death animation here
-        yield return new WaitForSeconds(1);
-        m_Controller.enabled = true;
+        //yield return new WaitForSeconds(1);
+
+        yield return null;
+
+        OnDeath?.Invoke(this);
     }
 }
