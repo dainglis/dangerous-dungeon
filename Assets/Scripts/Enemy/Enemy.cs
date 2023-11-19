@@ -4,13 +4,13 @@ using UnityEngine;
 
 public interface IEnemy
 {
-
     public CharacterController Controller { get; }
 
     public Action OnDeath { get; set; }
 
+    public float Speed { get ; set; }
+
     public void Move();
-    public void Die();
 }
 
 
@@ -18,13 +18,16 @@ public class Enemy : MonoBehaviour, IEnemy
 {
 
     [SerializeField] private CharacterController m_Controller;
-    [SerializeField] private GameObject m_Target;
+    
+    private GameObject m_Target;
     public CharacterController Controller => m_Controller;
 
     public Action OnDeath { get; set; }
 
     [Header("Movement Settings")]
     [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
+
+    public float Speed { get => m_MovementSpeed; set => m_MovementSpeed = value; }
 
     protected virtual void OnValidate()
     {
@@ -60,6 +63,11 @@ public class Enemy : MonoBehaviour, IEnemy
 
         Vector3 directionVector = m_MovementSpeed * Time.deltaTime * Vector3.Normalize(m_Target.transform.position - transform.position);
         m_Controller.Move(directionVector);
+    }
+
+    public virtual void Hit(IProjectile projectile)
+    {
+        Die();
     }
 
     public virtual void Die()

@@ -148,9 +148,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127590150412710106}
-        m_TargetAssemblyTypeName: TrackTarget, Assembly-CSharp
-        m_MethodName: Die
-        m_Mode: 1
+        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+        m_MethodName: Hit
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

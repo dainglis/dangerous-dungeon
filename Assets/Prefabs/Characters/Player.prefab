@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c162728d23ad2234c8c283d0fda4abc5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c162728d23ad2234c8c283d0fda4abc5,
         type: 3}
@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5151492872390713093, guid: c162728d23ad2234c8c283d0fda4abc5,
+        type: 3}
+      propertyPath: m_Name
+      value: avatar
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c162728d23ad2234c8c283d0fda4abc5,
         type: 3}
       propertyPath: m_Name
@@ -80,6 +85,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c162728d23ad2234c8c283d0fda4abc5,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 392630506462950975}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c162728d23ad2234c8c283d0fda4abc5,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4167319491949078352}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c162728d23ad2234c8c283d0fda4abc5,
         type: 3}
@@ -89,6 +98,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8169687759651585970}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c162728d23ad2234c8c283d0fda4abc5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3527741562967102788}
   m_SourcePrefab: {fileID: 100100000, guid: c162728d23ad2234c8c283d0fda4abc5, type: 3}
 --- !u!1 &1732410439378730839 stripped
 GameObject:
@@ -96,6 +109,24 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1498480194906079750}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &392630506462950975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732410439378730839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb22b35e16298a34da4b241de2d82336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InputActions: {fileID: 8169687759651585970}
+  Controller: {fileID: 4167319491949078352}
+  Stats:
+    Endurance: 50
+    Dexterity: 60
+    Strength: 70
 --- !u!143 &4167319491949078352
 CharacterController:
   m_ObjectHideFlags: 0
@@ -168,6 +199,20 @@ MonoBehaviour:
   m_Character: {fileID: 4167319491949078352}
   m_ProjectilePool: {fileID: 0}
   m_MovementSpeed: 5
-  m_AutoFire: 0
   m_ProjectileRate: 6
   m_ProjectileSpeed: 7
+  m_AutoFire: 0
+--- !u!114 &3527741562967102788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732410439378730839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdd5a40c0b5ed441bb6bb429bd1e85a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Player: {fileID: 392630506462950975}
+  m_InputActionMapping: {fileID: 8169687759651585970}

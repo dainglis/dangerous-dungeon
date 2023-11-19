@@ -26,17 +26,16 @@ public class InputActionMapping : MonoBehaviour
     [SerializeField] private CharacterController m_Character;
     [SerializeField] private ProjectilePool m_ProjectilePool;
 
-    //[SerializeField] private string ControlLayer = "Control";
-
-    [Header("Movement Settings")]
-    [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
 
 
     [Header("Projectile Settings")]
     [SerializeField] private bool m_AutoFire = false;
-    [SerializeField, Range(0.1f, 10f)] private float m_ProjectileRate = 1f;
 
-    [SerializeField, Range(0.1f, 10f)] private float m_ProjectileSpeed = 1f;
+
+    [HideInInspector] public float MovementSpeed = 1f;
+    [HideInInspector] public float ProjectileRate = 1f;
+    [HideInInspector] public float ProjectileSpeed = 1f;
+
 
     private void OnValidate()
     {
@@ -76,7 +75,7 @@ public class InputActionMapping : MonoBehaviour
 
         m_ProjectileElapsed += Time.deltaTime;
 
-        if (m_ProjectileElapsed >= (1 / m_ProjectileRate))
+        if (m_ProjectileElapsed >= (1 / ProjectileRate))
         {
             m_CanFire = true;
         }
@@ -93,13 +92,13 @@ public class InputActionMapping : MonoBehaviour
 
         m_ProjectilePool
             .Projectiles.Get()
-            .SetTrajectory(transform.position + m_Character.center, m_Target, m_ProjectileSpeed)
+            .SetTrajectory(transform.position + m_Character.center, m_Target, ProjectileSpeed)
             .Activate();
     }
 
     private void ApplyMovement()
     {
-        m_Character.Move(m_MovementSpeed * Time.deltaTime * m_Move);
+        m_Character.Move(MovementSpeed * Time.deltaTime * m_Move);
         if (m_Move != Vector3.zero) { gameObject.transform.forward = m_Move; }
     }
 

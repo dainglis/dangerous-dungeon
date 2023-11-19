@@ -1,23 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ProjectileCollision : MonoBehaviour
 {
 
-    public UnityEvent<GameObject> OnCollision;
+    public UnityEvent<IProjectile> OnCollision;
 
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log($"Collided with {collision.gameObject.name}");
-        OnCollision?.Invoke(collision.gameObject);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.TryGetComponent<IProjectile>(out var projectile)) { return; }
+
         Debug.Log($"Triggered by {other.gameObject.name}");
-        OnCollision?.Invoke(other.gameObject);
+        OnCollision?.Invoke(projectile);
     }
 }
