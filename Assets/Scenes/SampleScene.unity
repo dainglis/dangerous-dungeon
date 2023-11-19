@@ -9236,7 +9236,7 @@ Camera:
   far clip plane: 1000
   field of view: 60.000004
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -14873,10 +14873,10 @@ GameObject:
   m_Component:
   - component: {fileID: 465388379}
   - component: {fileID: 465388378}
-  - component: {fileID: 465388381}
   - component: {fileID: 465388380}
+  - component: {fileID: 465388382}
   m_Layer: 0
-  m_Name: Virtual Camera
+  m_Name: Player Follow Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14904,7 +14904,7 @@ MonoBehaviour:
   m_Follow: {fileID: 574141506}
   m_Lens:
     FieldOfView: 60.000004
-    OrthographicSize: 6
+    OrthographicSize: 5
     NearClipPlane: 0.1
     FarClipPlane: 1000
     Dutch: 0
@@ -14935,8 +14935,8 @@ Transform:
   m_Children:
   - {fileID: 1968865050}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 49.65, y: 45, z: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 50.243, y: 45.4, z: 0}
 --- !u!114 &465388380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15020,7 +15020,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 330585545}
---- !u!114 &465388381
+--- !u!114 &465388382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15029,11 +15029,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 465388377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb6df6dbabfa3644295284d1ab4486d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d158a98184c32342b505627f30f25f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 465388378}
-  player: {fileID: 465388380}
+  m_RotateAction: {fileID: -7959968605715635210, guid: f84e50e9f30c62947b5cd46f7369f005,
+    type: 3}
+  m_ZoomAction: {fileID: -8879537915459269859, guid: f84e50e9f30c62947b5cd46f7369f005,
+    type: 3}
+  HeightMax: 35
+  HeightMin: 10
+  ZoomMax: 8
+  ZoomMin: 3
 --- !u!1001 &475756009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69187,7 +69193,7 @@ PrefabInstance:
     - target: {fileID: 1387410712546551277, guid: 0eac99e4539bada439828f8eec1be1d5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1387410712546551277, guid: 0eac99e4539bada439828f8eec1be1d5,
         type: 3}

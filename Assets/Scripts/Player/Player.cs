@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public InputActionMapping InputActions;
+    public PlayerInputActionMapping InputActions;
     public CharacterController Controller;
     public CharacterStats Stats;
 
@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!InputActions) { InputActions = GetComponent<InputActionMapping>(); }
+        if (!InputActions) { InputActions = GetComponent<PlayerInputActionMapping>(); }
         if (!Controller) { Controller = GetComponent<CharacterController>(); }
     }
 

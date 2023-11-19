@@ -2,36 +2,39 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-[RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(CharacterController))]
-public class InputActionMapping : MonoBehaviour
+public class PlayerInputActionMapping : MonoBehaviour
 {
     // Cache variables
-    private Vector2 m_MoveCache;
-    private Vector3 m_LocalForward;
-    private Vector3 m_LocalLeft;
+    private Vector2 m_MoveCache;    // 2D vector from Input system
+    
+    private Vector3 m_Move;         // Converted 3D vector defining player movement
+    
+    private Vector3 m_LocalForward; // Normalized forward vector for player, relative to camera
+    private Vector3 m_LocalLeft;    // Normalized left vector for player, relative to camera
+    
+    private Vector3 m_Target;       // Projectile target, probably need to separate movement and shooting
+    private Plane m_TargetPlane;    // In-memory plane used for calculating raycasts from player in world space
 
-    private Vector3 m_Move;
 
-    private Vector3 m_Target;
+    [Header("Projectile Settings")]
+    [SerializeField] private bool m_AutoFire = false;
+    private bool m_QueueProjectile = false; // Should a single projectile be fired?
+    private bool m_MarkDirty = false;       // Should recalculate local direction vectors?
+    private bool m_CanFire = true;          // Can a projectile be generated?
 
-    private Plane m_TargetPlane;
-
-    private float m_ProjectileElapsed;
-    private bool m_MarkDirty = false;
-    private bool m_CanFire = true;
-
+    private float m_ProjectileElapsed;      // Time since last projectile
 
 
     [SerializeField] private CharacterController m_Character;
     [SerializeField] private ProjectilePool m_ProjectilePool;
 
+    [Header("Debug Settings")]
+    [SerializeField, Tooltip("Only shown in Scene view")] private bool m_ShowDebugRays = true;
 
 
-    [Header("Projectile Settings")]
-    [SerializeField] private bool m_AutoFire = false;
-
-
+    // Player movement values determined by player stats
+    // These values are updated externally
     [HideInInspector] public float MovementSpeed = 1f;
     [HideInInspector] public float ProjectileRate = 1f;
     [HideInInspector] public float ProjectileSpeed = 1f;
@@ -39,12 +42,13 @@ public class InputActionMapping : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!m_Character) { GetComponent<CharacterController>(); }
+        if (!m_Character) { m_Character = GetComponent<CharacterController>(); }
+        if (!m_ProjectilePool) { m_ProjectilePool = FindObjectOfType<ProjectilePool>(); }
     }
 
     private void Start()
     {
-        // Define the raycast plane for "firing"
+        // Define the XZ raycast plane at the height of the player
         m_TargetPlane = new(Vector3.up, m_Character.center);
     }
 
@@ -56,10 +60,13 @@ public class InputActionMapping : MonoBehaviour
         ApplyMovement();
         CheckProjectile();
 
-        Debug.DrawRay(transform.position + m_Character.center, m_LocalForward, Color.red);
-        Debug.DrawLine(gameObject.transform.position, m_Target, Color.blue);
-    }
 
+        if (m_ShowDebugRays)
+        {
+            Debug.DrawRay(transform.position + m_Character.center, m_LocalForward, Color.red);
+            Debug.DrawLine(gameObject.transform.position, m_Target, Color.blue);
+        }
+    }
 
 
     public void CheckProjectile()
@@ -81,6 +88,9 @@ public class InputActionMapping : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///     Casts a ray from the mouse position onto the XZ plane passing through the player
+    /// </summary>
     public void LaunchProjectile()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -89,6 +99,9 @@ public class InputActionMapping : MonoBehaviour
         {
             m_Target = ray.GetPoint(distance);
         }
+
+        // TODO define projectile distance based on player stats.
+        // Projectiles should travel the same distance regardless of mouse being close or far
 
         m_ProjectilePool
             .Projectiles.Get()
@@ -116,30 +129,38 @@ public class InputActionMapping : MonoBehaviour
         m_Move = (m_LocalForward * m_MoveCache.y) + (m_LocalLeft * -m_MoveCache.x);
     }
 
+
+
     #region Input System Callbacks
 
-    bool m_QueueProjectile = false;
-
+    /// <summary>
+    ///     Toggle auto-fire when the 'Fire' action is received.
+    ///     Auto-fire is enabled when the button is first pressed, then
+    ///     when the button is released, auto-fire is disabled.
+    /// </summary>
     public void OnFire()
     {
         m_AutoFire = !m_AutoFire;
     }
 
     /// <summary>
-    ///     Toggles auto-fire
+    ///     Toggles auto-fire when the 'ToggleFire' action is received.
+    ///     State changes each time the button is pressed.
     /// </summary>
     public void OnToggleFire()
     {
-        m_AutoFire = !m_AutoFire;
+        OnFire();
         m_ProjectileElapsed = 0f;
     }
 
+    /// <summary>
+    ///     Watches for the 'Rotate' action which is one of the cases
+    ///     where the local direction vectors must be recalculated
+    /// </summary>
+    /// <param name="value"></param>
     public void OnRotate(InputValue value)
     {
         float activeRotation = value.Get<float>();
-
-        Debug.Log($"Rotate: {activeRotation}");
-
         m_MarkDirty = activeRotation != 0f;
     }
 

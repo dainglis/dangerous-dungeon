@@ -6,11 +6,11 @@ public class CharacterStatsHandler : MonoBehaviour
 {
 
     [SerializeField] private Player m_Player;
-    [SerializeField] private InputActionMapping m_InputActionMapping; // this is a god class rn
+    [SerializeField] private PlayerInputActionMapping m_InputActionMapping; // this is a god class rn
 
     // Get base stats
     // Apply modifiers
-    // Pass values to other classes, ie InputActionMapping
+    // Pass values to other classes, ie PlayerInputActionMapping
 
 
     public void RandomStatIncrease()

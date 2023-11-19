@@ -124,6 +124,7 @@ MonoBehaviour:
   InputActions: {fileID: 8169687759651585970}
   Controller: {fileID: 4167319491949078352}
   Stats:
+    Level: 0
     Endurance: 50
     Dexterity: 60
     Strength: 70
@@ -193,15 +194,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1732410439378730839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fef2203caeda114987e6ed42245a5b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 87258e798681d2147b54ff7f86041fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Character: {fileID: 4167319491949078352}
-  m_ProjectilePool: {fileID: 0}
-  m_MovementSpeed: 5
-  m_ProjectileRate: 6
-  m_ProjectileSpeed: 7
   m_AutoFire: 0
+  m_Character: {fileID: 0}
+  m_ProjectilePool: {fileID: 0}
+  m_ShowDebugRays: 1
+  MovementSpeed: 1
+  ProjectileRate: 1
+  ProjectileSpeed: 1
 --- !u!114 &3527741562967102788
 MonoBehaviour:
   m_ObjectHideFlags: 0
