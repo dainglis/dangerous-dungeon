@@ -1,7 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.tvOS;
 
 
 [RequireComponent(typeof(PlayerInput))]
@@ -25,7 +23,8 @@ public class InputActionMapping : MonoBehaviour
 
 
 
-    [SerializeField] private CharacterController character;
+    [SerializeField] private CharacterController m_Character;
+    [SerializeField] private ProjectilePool m_ProjectilePool;
 
     //[SerializeField] private string ControlLayer = "Control";
 
@@ -41,13 +40,13 @@ public class InputActionMapping : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!character) { GetComponent<CharacterController>(); }
+        if (!m_Character) { GetComponent<CharacterController>(); }
     }
 
     private void Start()
     {
         // Define the raycast plane for "firing"
-        m_TargetPlane = new(Vector3.up, character.center);
+        m_TargetPlane = new(Vector3.up, m_Character.center);
     }
 
 
@@ -58,7 +57,7 @@ public class InputActionMapping : MonoBehaviour
         ApplyMovement();
         CheckProjectile();
 
-        Debug.DrawRay(transform.position + character.center, m_LocalForward, Color.red);
+        Debug.DrawRay(transform.position + m_Character.center, m_LocalForward, Color.red);
         Debug.DrawLine(gameObject.transform.position, m_Target, Color.blue);
     }
 
@@ -92,12 +91,15 @@ public class InputActionMapping : MonoBehaviour
             m_Target = ray.GetPoint(distance);
         }
 
-        _ = Projectile.CreateProjectile(transform.position + character.center, m_Target, m_ProjectileSpeed);
+        m_ProjectilePool
+            .Projectiles.Get()
+            .SetTrajectory(transform.position + m_Character.center, m_Target, m_ProjectileSpeed)
+            .Activate();
     }
 
     private void ApplyMovement()
     {
-        character.Move(m_MovementSpeed * Time.deltaTime * m_Move);
+        m_Character.Move(m_MovementSpeed * Time.deltaTime * m_Move);
         if (m_Move != Vector3.zero) { gameObject.transform.forward = m_Move; }
     }
 
@@ -122,7 +124,6 @@ public class InputActionMapping : MonoBehaviour
     public void OnFire()
     {
         m_AutoFire = !m_AutoFire;
-        //m_QueueProjectile = true;
     }
 
     /// <summary>
@@ -136,12 +137,11 @@ public class InputActionMapping : MonoBehaviour
 
     public void OnRotate(InputValue value)
     {
-        float item = value.Get<float>();
+        float activeRotation = value.Get<float>();
 
-        Debug.Log($"Rotate: {item}");
+        Debug.Log($"Rotate: {activeRotation}");
 
-        m_MarkDirty = item != 0f;
-        //CalculateDirectionVectors();
+        m_MarkDirty = activeRotation != 0f;
     }
 
     /// <summary>

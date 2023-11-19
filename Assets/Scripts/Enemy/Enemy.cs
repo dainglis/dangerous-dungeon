@@ -7,7 +7,7 @@ public interface IEnemy
 
     public CharacterController Controller { get; }
 
-    public Action<IEnemy> OnDeath { get; set; }
+    public Action OnDeath { get; set; }
 
     public void Move();
     public void Die();
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour, IEnemy
     [SerializeField] private GameObject m_Target;
     public CharacterController Controller => m_Controller;
 
-    public Action<IEnemy> OnDeath { get; set; }
+    public Action OnDeath { get; set; }
 
     [Header("Movement Settings")]
     [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
@@ -75,6 +75,6 @@ public class Enemy : MonoBehaviour, IEnemy
 
         yield return null;
 
-        OnDeath?.Invoke(this);
+        OnDeath?.Invoke();
     }
 }

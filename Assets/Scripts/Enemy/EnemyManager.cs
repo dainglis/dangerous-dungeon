@@ -1,28 +1,37 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-
+/// <summary>
+///     An Object Pool for managing enemies (entities) that are spawned into the map
+/// </summary>
 public class EnemyManager : MonoBehaviour
 {
-    public string RespawnTag = "Respawn";
-
-
-    public float SpawnTime = 2f;
     private float m_Elapsed = 0f;
-
     private GameObject[] m_SpawnPoints = null;
+    private IObjectPool<IEnemy> m_EnemyPool = null;
 
+
+    public string RespawnTag = "Respawn";
+    public int MaxEnemies = 100;
+    public float SpawnTime = 2f;
+
+    [Tooltip("Location in world space to store pooled entities")]
+    public Vector3 m_CachePosition = Vector3.down * 50;
 
     public GameObject[] EnemyResources;
-    private Vector3 m_CachePosition = Vector3.up * 1000;
+    public bool DebugMessages = false;
 
-    protected IObjectPool<IEnemy> m_EnemyPool;
+    public int ActiveEnemies { get; private set; } = 0;
+
+    public bool CanCreateEnemy => ActiveEnemies < MaxEnemies;
+
+
     public IObjectPool<IEnemy> EnemyPool
     {
         get
         {
             m_EnemyPool ??= new ObjectPool<IEnemy>(CreateEnemy, SpawnEnemy, ReleaseEnemy, DestroyEnemy,
-                collectionCheck: true, defaultCapacity: 10, maxSize: 100);
+                collectionCheck: true, defaultCapacity: 10, maxSize: MaxEnemies);
 
             return m_EnemyPool;
         }
@@ -38,26 +47,29 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    public IEnemy CreateEnemy()
+
+
+    private IEnemy CreateEnemy()
     {
-        Debug.Log("Create");
+        if (!CanCreateEnemy) { return null; }
 
-        var obj = Instantiate(
-            EnemyResources[Random.Range(0, EnemyResources.Length)],
-            m_CachePosition,
-            Quaternion.identity,
-            transform);
+        IEnemy enemy = Instantiate(
+                EnemyResources[Random.Range(0, EnemyResources.Length)],
+                m_CachePosition,
+                Quaternion.identity,
+                transform)
+            .GetComponent<IEnemy>();
 
-        IEnemy enemy = obj.GetComponent<IEnemy>();
         enemy.Controller.enabled = false;
-        enemy.OnDeath += m_EnemyPool.Release;
+        enemy.OnDeath += () => m_EnemyPool.Release(enemy);
 
         return enemy;
     }
 
-    public void SpawnEnemy(IEnemy enemy)
+    private void SpawnEnemy(IEnemy enemy)
     {
-        Debug.Log("Spawning an Orc!");
+        if (!CanCreateEnemy) { return; }
+
         if (SpawnPoints == null) { return; }
 
         int index = Random.Range(0, SpawnPoints.Length);
@@ -65,20 +77,24 @@ public class EnemyManager : MonoBehaviour
         enemy.Controller.enabled = false;
         enemy.Controller.transform.position = SpawnPoints[index].transform.position;
         enemy.Controller.enabled = true;
+
+        ++ActiveEnemies;
+
+        if (DebugMessages) { Debug.Log($"Spawning an Orc!"); }
     }
 
-    public void ReleaseEnemy(IEnemy enemy)
+    private void ReleaseEnemy(IEnemy enemy)
     {
-        Debug.Log("Release");
         enemy.Controller.enabled = false;
         enemy.Controller.transform.position = m_CachePosition;
+
+        --ActiveEnemies;
     }
 
-    public void DestroyEnemy(IEnemy enemy)
+    private void DestroyEnemy(IEnemy enemy)
     {
-        Debug.Log("Destroy");
+        Destroy(enemy.Controller.gameObject);
     }
-
 
     private void Update()
     {
@@ -89,5 +105,11 @@ public class EnemyManager : MonoBehaviour
             EnemyPool.Get();
             m_Elapsed = 0f;
         }
+    }
+
+    private void OnGUI()
+    {
+        // DEBUG
+        GUILayout.Label($"Active Enemies: {ActiveEnemies}");
     }
 }

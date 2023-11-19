@@ -30608,6 +30608,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 954815048}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &957949654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 957949656}
+  - component: {fileID: 957949655}
+  m_Layer: 0
+  m_Name: Projectile Pool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &957949655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957949654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d5ac42eb58793445a00aea045bd85f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileResource: {fileID: 4833750076377095885, guid: 526e12edcc690aa4d9d25fe194bcc185,
+    type: 3}
+--- !u!4 &957949656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957949654}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &958402949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61359,10 +61405,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RespawnTag: Respawn
+  MaxEnemies: 100
   SpawnTime: 2
+  m_CachePosition: {x: 0, y: -50, z: 0}
   EnemyResources:
   - {fileID: 7812898587628658248, guid: 020a1532ed24d2c42a0e425ce2b0b927, type: 3}
   - {fileID: 4507784744651813354, guid: e8f7319ac3a7a014d88d56321b2a0459, type: 3}
+  DebugMessages: 0
 --- !u!4 &1909032311
 Transform:
   m_ObjectHideFlags: 0
@@ -69048,6 +69097,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8169687759651585970, guid: 0eac99e4539bada439828f8eec1be1d5,
+        type: 3}
+      propertyPath: m_ProjectilePool
+      value: 
+      objectReference: {fileID: 957949655}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
