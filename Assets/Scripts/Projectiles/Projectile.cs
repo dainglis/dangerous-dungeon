@@ -54,6 +54,8 @@ public class Projectile : MonoBehaviour, IProjectile
 
     public IProjectile Dispose()
     {
+        if (disposed) return this;
+
         disposed = true;
         enabled = false;
         OnDispose?.Invoke();

@@ -3,15 +3,50 @@ using UnityEngine.Events;
 
 public class ProjectileCollision : MonoBehaviour
 {
+    public enum Reaction
+    {
+        Block,
+        Event
+    }
+
+    public Reaction ReactionMode;
+
+    private IProjectile m_Last;
 
     public UnityEvent<IProjectile> OnCollision;
 
+    public void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"Projectile collided with {gameObject.name}. ReactionMode Mode: {ReactionMode}");
 
-    private void OnTriggerEnter(Collider other)
+    }
+
+    public void OnTriggerEnter(Collider other)
     {
         if (!other.TryGetComponent<IProjectile>(out var projectile)) { return; }
 
-        Debug.Log($"Triggered by {other.gameObject.name}");
-        OnCollision?.Invoke(projectile);
+        Debug.Log($"Projectile collided with {gameObject.name} to trigger. ReactionMode Mode: {ReactionMode}");
+
+        switch (ReactionMode)
+        {
+            case Reaction.Block:
+                BlockProjectile(projectile);
+                break;
+            case Reaction.Event:
+                OnCollision?.Invoke(projectile);
+                break;
+
+        }
+
+        m_Last = projectile;
+    }
+
+    /// <summary>
+    ///     Disposes of the last projectile to collide with this object
+    /// </summary>
+    public void BlockProjectile(IProjectile projectile)
+    {
+        if (projectile == null) return;
+        projectile.Dispose();
     }
 }
