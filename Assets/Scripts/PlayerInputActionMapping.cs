@@ -48,6 +48,7 @@ public class PlayerInputActionMapping : MonoBehaviour
 
     private void Start()
     {
+        OnValidate();
         // Define the XZ raycast plane at the height of the player
         m_TargetPlane = new(Vector3.up, m_Character.center);
     }

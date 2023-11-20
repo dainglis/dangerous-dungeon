@@ -20,8 +20,6 @@ public class CameraInputActionMapping : MonoBehaviour
 
     private CinemachineVirtualCamera cam;
     private CinemachineOrbitalTransposer transposer;
-    //[SerializeField] private PlayerInput player;
-
 
     private InputAction m_Rotate;
     private InputAction m_Zoom;
@@ -29,12 +27,12 @@ public class CameraInputActionMapping : MonoBehaviour
     private void OnValidate()
     {
         if (!cam) { cam = GetComponent<CinemachineVirtualCamera>(); }
-        //if (!player) { player = GetComponent<PlayerInput>(); }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        OnValidate();
         transposer = cam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
         if (transposer == null )
         {
