@@ -7,15 +7,14 @@ public class PlayerInputActionMapping : MonoBehaviour
 {
     // Cache variables
     private Vector2 m_MoveCache;    // 2D vector from Input system
-    
-    private Vector3 m_Move;         // Converted 3D vector defining player movement
-    
+
     private Vector3 m_LocalForward; // Normalized forward vector for player, relative to camera
     private Vector3 m_LocalLeft;    // Normalized left vector for player, relative to camera
-    
+
     private Vector3 m_Target;       // Projectile target, probably need to separate movement and shooting
     private Plane m_TargetPlane;    // In-memory plane used for calculating raycasts from player in world space
 
+    public Vector3 MovementVector { get; private set; }         // Converted 3D vector defining player movement
 
     [Header("Projectile Settings")]
     [SerializeField] private bool m_AutoFire = false;
@@ -27,6 +26,7 @@ public class PlayerInputActionMapping : MonoBehaviour
 
 
     [SerializeField] private CharacterController m_Character;
+    [SerializeField] private Animator m_Animator;
     [SerializeField] private ProjectilePool m_ProjectilePool;
 
     [Header("Debug Settings")]
@@ -112,8 +112,11 @@ public class PlayerInputActionMapping : MonoBehaviour
 
     private void ApplyMovement()
     {
-        m_Character.Move(MovementSpeed * Time.deltaTime * m_Move);
-        if (m_Move != Vector3.zero) { gameObject.transform.forward = m_Move; }
+        m_Character.Move(MovementSpeed * Time.deltaTime * MovementVector);
+        if (MovementVector != Vector3.zero) { gameObject.transform.forward = MovementVector; }
+
+        // animate movement
+        m_Animator.SetFloat("MovementSpeed", MovementVector.magnitude);
     }
 
     /// <summary>
@@ -127,7 +130,7 @@ public class PlayerInputActionMapping : MonoBehaviour
         m_LocalLeft = Vector3.Cross(m_LocalForward, Vector3.up).normalized;
 
         // m_MoveCache.y is Z-forward, m_MoveCache.x is right
-        m_Move = (m_LocalForward * m_MoveCache.y) + (m_LocalLeft * -m_MoveCache.x);
+        MovementVector = (m_LocalForward * m_MoveCache.y) + (m_LocalLeft * -m_MoveCache.x);
     }
 
 

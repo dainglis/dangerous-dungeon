@@ -25,7 +25,9 @@ public class Enemy : MonoBehaviour, IEnemy
     public Action OnDeath { get; set; }
 
     [Header("Movement Settings")]
+    [SerializeField] private Animator m_Animator;
     [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
+    private string m_AnimMoveSpeedParam = "MovementSpeed";
 
     public float Speed { get => m_MovementSpeed; set => m_MovementSpeed = value; }
 
@@ -63,6 +65,9 @@ public class Enemy : MonoBehaviour, IEnemy
 
         Vector3 directionVector = m_MovementSpeed * Time.deltaTime * Vector3.Normalize(m_Target.transform.position - transform.position);
         m_Controller.Move(directionVector);
+
+        // Animate movement
+        m_Animator.SetFloat(m_AnimMoveSpeedParam, directionVector.magnitude);
     }
 
     public virtual void Hit(IProjectile projectile)

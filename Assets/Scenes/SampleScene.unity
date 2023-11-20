@@ -1010,6 +1010,8 @@ MonoBehaviour:
   EnemyResources:
   - {fileID: 7812898587628658248, guid: 020a1532ed24d2c42a0e425ce2b0b927, type: 3}
   - {fileID: 4507784744651813354, guid: e8f7319ac3a7a014d88d56321b2a0459, type: 3}
+  - {fileID: 1454505748264425232, guid: 49c4984784d6ac1428f0c081f921ce72, type: 3}
+  - {fileID: 3436677507784262990, guid: 86a832b303275e14c914886a0026e9ff, type: 3}
   DebugMessages: 0
 --- !u!4 &1909032311
 Transform:
