@@ -2,6 +2,13 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+/// <summary>
+///     Maps Input Actions to Orbital Transposer camera movements
+/// </summary>
+/// <remarks>
+///     This will need to be significantly modified if upgrading to Cinemachine 3.x
+/// </remarks>
 [RequireComponent(typeof(CinemachineVirtualCameraBase))]
 public class CameraInputActionMapping : MonoBehaviour
 {
@@ -17,6 +24,8 @@ public class CameraInputActionMapping : MonoBehaviour
     [Header("Camera Zoom Boundaries")]
     public float ZoomMax = 8;
     public float ZoomMin = 3;
+    public float ZoomSensitivity = 3;
+
 
     private CinemachineVirtualCamera cam;
     private CinemachineOrbitalTransposer transposer;
@@ -57,6 +66,7 @@ public class CameraInputActionMapping : MonoBehaviour
         transposer.m_XAxis.m_InputAxisValue = m_Rotate.ReadValue<float>();
     }
 
+
     private void DoZoom()
     {
         if (m_Zoom == null) { return; }
@@ -65,7 +75,7 @@ public class CameraInputActionMapping : MonoBehaviour
         if (zoomInput != 0f)
         {
             cam.m_Lens.OrthographicSize = Mathf.Clamp(
-                cam.m_Lens.OrthographicSize - (zoomInput / 1000),
+                cam.m_Lens.OrthographicSize - (zoomInput / ZoomSensitivity),
                 ZoomMin,
                 ZoomMax);
             // TODO update camera height based on zoom

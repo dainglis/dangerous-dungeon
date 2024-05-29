@@ -44,7 +44,10 @@ public class PlayerInputActionMapping : MonoBehaviour
     private void OnValidate()
     {
         if (!m_Character) { m_Character = GetComponent<CharacterController>(); }
-        if (!m_ProjectilePool) { m_ProjectilePool = FindObjectOfType<ProjectilePool>(); }
+
+        // This will likely need to be modified when new projectile pools
+        // for NPCs or networked clients are added
+        if (!m_ProjectilePool) { m_ProjectilePool = FindAnyObjectByType<ProjectilePool>(); }
     }
 
     private void Start()
