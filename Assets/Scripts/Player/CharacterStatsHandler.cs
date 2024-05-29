@@ -4,7 +4,6 @@ using UnityEngine;
 // use this to define a decorator for stat boosts to pass data to player
 public class CharacterStatsHandler : MonoBehaviour
 {
-
     [SerializeField] private Player m_Player;
     [SerializeField] private PlayerInputActionMapping m_InputActionMapping; // this is a god class rn
 
@@ -15,7 +14,7 @@ public class CharacterStatsHandler : MonoBehaviour
 
     public void RandomStatIncrease()
     {
-        switch (Random.Range(0, 3))
+        switch (Random.Range(0, 4))
         {
             case 0:
                 m_Player.Stats.Endurance++;
@@ -25,6 +24,9 @@ public class CharacterStatsHandler : MonoBehaviour
                 break;
             case 2:
                 m_Player.Stats.Strength++;
+                break;
+            case 3:
+                m_Player.Stats.Intelligence++;
                 break;
         }
     }

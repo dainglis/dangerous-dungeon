@@ -8,15 +8,15 @@ public class CharacterStats
     public enum Stat
     {
         Level = 0,
-        Vitality = 1,
-        Attunement = 2,
-        Endurance = 3,
-        Strength = 4,
-        Dexterity = 5,
-        Resistance = 6,
-        Intelligence = 7,
-        Faith = 8,
-        Humanity = 9
+        Vitality = 1,       // Health
+        Attunement = 2,     // Ability
+        Endurance = 3,      // Movement Speed
+        Strength = 4,       // Damage / Projectile Speed?
+        Dexterity = 5,      // Fire Rate
+        Resistance = 6,     // Defense
+        Intelligence = 7,   // Range
+        Faith = 8,          // ?
+        Humanity = 9        // ?
     }
 
     public Dictionary<Stat, int> Values;
@@ -43,18 +43,23 @@ public class CharacterStats
         return stats;
     }
 
-    [Tooltip("Movement Speed")]
+    [Tooltip("Total Level")]
     public int Level = 0;
 
     [Tooltip("Movement Speed")]
     [Range(0, 200)]
     public int Endurance = 50;
 
+    [Tooltip("Projectile Speed")]
+    [Range(0, 200)]
+    public int Strength = 70;
+
     [Tooltip("Projectile Fire Rate")]
     [Range(0, 200)]
     public int Dexterity = 60;
 
-    [Tooltip("Projectile Speed")]
+    [Tooltip("Projectile Range")]
     [Range(0, 200)]
-    public int Strength = 70;
+    public int Intelligence = 50;
+
 }

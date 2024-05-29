@@ -38,6 +38,7 @@ public class PlayerInputActionMapping : MonoBehaviour
     [HideInInspector] public float MovementSpeed = 1f;
     [HideInInspector] public float ProjectileRate = 1f;
     [HideInInspector] public float ProjectileSpeed = 1f;
+    [HideInInspector] public float ProjectileRange = 1f;
 
 
     private void OnValidate()
@@ -101,12 +102,15 @@ public class PlayerInputActionMapping : MonoBehaviour
             m_Target = ray.GetPoint(distance);
         }
 
-        // TODO define projectile distance based on player stats.
-        // Projectiles should travel the same distance regardless of mouse being close or far
+        // Initial projectile position, based on character
+        Vector3 start = transform.position + m_Character.center;
+
+        // Projectile destination, based on cursor direction and projectile range
+        Vector3 end = start + Vector3.Normalize(m_Target - start) * ProjectileRange;
 
         m_ProjectilePool
             .Projectiles.Get()
-            .SetTrajectory(transform.position + m_Character.center, m_Target, ProjectileSpeed)
+            .SetTrajectory(start, end, ProjectileSpeed)
             .Activate();
     }
 
