@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface IProjectile
 {
@@ -11,7 +11,7 @@ public interface IProjectile
 
     public float Speed { get; set; }
 
-    public Action OnDispose { get; set; }
+    public UnityAction OnDispose { get; set; }
 
     public IProjectile Activate();
 

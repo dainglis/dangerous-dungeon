@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour, IProjectile
 {
@@ -15,7 +16,8 @@ public class Projectile : MonoBehaviour, IProjectile
     public Vector3 Start { get => m_Start; set => m_Start = value; }
     public Vector3 End { get => m_End; set => m_End = value; }
     public float Speed { get => m_Speed; set => m_Speed = value; }
-    public Action OnDispose { get; set; }
+
+    public UnityAction OnDispose { get; set; } 
 
     private bool disposed = false;
 

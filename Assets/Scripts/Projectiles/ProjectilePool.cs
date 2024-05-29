@@ -9,12 +9,12 @@ public class ProjectilePool : MonoBehaviour
     private IObjectPool<IProjectile> m_Projectiles = null;
 
 
-
     // Will refactor this when defining different projectile types
     public GameObject ProjectileResource;
 
-    public int ActiveProjectiles { get; private set; }
+    public ParticleSystem ParticleSystem;
 
+    public int ActiveProjectiles { get; private set; }
 
 
     public IObjectPool<IProjectile> Projectiles
@@ -32,14 +32,23 @@ public class ProjectilePool : MonoBehaviour
     {
         IProjectile projectile = Instantiate(ProjectileResource)
             .GetComponent<IProjectile>();
-        projectile.OnDispose += () => m_Projectiles.Release(projectile);
+
+        // Connect projectiles to particle system
+        projectile.OnDispose +=(() =>
+        {
+            if (!ParticleSystem) { return; }
+            ParticleSystem.transform.position = projectile.Position;
+            ParticleSystem.Play();
+        });
+
+        // Event to release projectile from pool when disposed
+        projectile.OnDispose += (() => m_Projectiles.Release(projectile));
 
         return projectile;
     }
 
     private void GetProjectile(IProjectile projectile) 
     {
-        // projectile.GameObject.SetActive(true); responsibility of the spawner
         ++ActiveProjectiles;
         m_Label = $"Active Projectiles: {ActiveProjectiles}";
     }
@@ -56,7 +65,6 @@ public class ProjectilePool : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         if (!ProjectileResource)
