@@ -34,15 +34,19 @@ public class ProjectilePool : MonoBehaviour
             .GetComponent<IProjectile>();
 
         // Connect projectiles to particle system
-        projectile.OnDispose +=(() =>
+        projectile.OnDispose += () =>
         {
             if (!ParticleSystem) { return; }
-            ParticleSystem.transform.position = projectile.Position;
-            ParticleSystem.Play();
-        });
+            // Perhaps we can better decorate projectiles using a decorator pattern... at a later date
+            if (projectile.Decoration is bool particle && particle)
+            {
+                ParticleSystem.transform.position = projectile.Position;
+                ParticleSystem.Play();
+            }
+        };
 
         // Event to release projectile from pool when disposed
-        projectile.OnDispose += (() => m_Projectiles.Release(projectile));
+        projectile.OnDispose += () => m_Projectiles.Release(projectile);
 
         return projectile;
     }

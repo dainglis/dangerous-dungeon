@@ -72,6 +72,8 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public virtual void Hit(IProjectile projectile)
     {
+        projectile.Decoration = true;
+        projectile.Dispose();
         Die();
     }
 

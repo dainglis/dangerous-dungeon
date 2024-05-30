@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +9,8 @@ public class Projectile : MonoBehaviour, IProjectile
     private Vector3 m_End;
     private float m_Speed;
 
+    private bool m_ShowParticles = true;
+
 
     // IProjectile interface properties
     public Vector3 Position { get => transform.position; set => transform.position = value; }
@@ -17,7 +18,9 @@ public class Projectile : MonoBehaviour, IProjectile
     public Vector3 End { get => m_End; set => m_End = value; }
     public float Speed { get => m_Speed; set => m_Speed = value; }
 
-    public UnityAction OnDispose { get; set; } 
+    public UnityAction OnDispose { get; set; }
+
+    public object Decoration { get => m_ShowParticles; set => m_ShowParticles = (bool)value; }
 
     private bool disposed = false;
 
@@ -48,6 +51,7 @@ public class Projectile : MonoBehaviour, IProjectile
 
     public IProjectile Activate()
     {
+        m_ShowParticles = false;
         disposed = false;
         enabled = true;
 

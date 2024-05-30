@@ -47,6 +47,7 @@ public class ProjectileCollision : MonoBehaviour
     public void BlockProjectile(IProjectile projectile)
     {
         if (projectile == null) return;
+        projectile.Decoration = true;
         projectile.Dispose();
     }
 }

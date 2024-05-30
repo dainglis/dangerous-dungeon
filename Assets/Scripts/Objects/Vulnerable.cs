@@ -24,6 +24,7 @@ public class Vulnerable : MonoBehaviour, IVulnerable
 
     public void Hit(IProjectile projectile)
     {
+        projectile.Decoration = true;
         projectile.Dispose();
 
         if (broken) { return; }
