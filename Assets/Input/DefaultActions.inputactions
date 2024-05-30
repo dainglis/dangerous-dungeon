@@ -377,7 +377,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "8fec6bfd-fd66-4929-bcd5-4749611b9e22",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -386,7 +386,7 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "3c98167a-69df-4c73-8b5d-dfabc66931d6",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -450,6 +450,15 @@
                     "type": "PassThrough",
                     "id": "b2eb0285-ca8f-4da0-8865-7f5405ea8987",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "5167761f-f5cd-49ce-b7be-f3c28d936198",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -871,6 +880,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ff9fb37-d083-48c5-97b5-12d8057db317",
+                    "path": "*/{Menu}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad;Joystick;XR;Touch",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0787659f-9c3c-4db7-9712-49642650af8b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
