@@ -17,7 +17,11 @@ public interface IEnemy : IVulnerable, IPoolable
 
 public class Enemy : MonoBehaviour, IEnemy
 {
+    private const float DeathAnimWaitTime = 1.3f;
+    private readonly int AnimMoveSpeedKey = Animator.StringToHash("MovementSpeed");
+    private readonly int AnimDeadParam = Animator.StringToHash("Dead");
 
+    
     [SerializeField] private CharacterController m_Controller;
     
     private GameObject m_Target;
@@ -28,7 +32,7 @@ public class Enemy : MonoBehaviour, IEnemy
     [Header("Movement Settings")]
     [SerializeField] private Animator m_Animator;
     [SerializeField, Range(0.1f, 10f)] private float m_MovementSpeed = 1f;
-    private string m_AnimMoveSpeedParam = "MovementSpeed";
+    
 
     public float Speed { get => m_MovementSpeed; set => m_MovementSpeed = value; }
 
@@ -75,7 +79,7 @@ public class Enemy : MonoBehaviour, IEnemy
         m_Controller.Move(directionVector);
 
         // Animate movement
-        m_Animator.SetFloat(m_AnimMoveSpeedParam, directionVector.magnitude);
+        m_Animator.SetFloat(AnimMoveSpeedKey, directionVector.magnitude);
     }
 
     public virtual void Hit(IProjectile projectile)
@@ -97,14 +101,16 @@ public class Enemy : MonoBehaviour, IEnemy
     {
         // Could play a death animation here
         //yield return new WaitForSeconds(1);
+        m_Animator.SetBool(AnimDeadParam, true);
 
-        yield return null;
+        yield return new WaitForSeconds(DeathAnimWaitTime);
 
         OnDeath?.Invoke();
     }
 
     public void New()
     {
+        m_Animator.SetBool(AnimDeadParam, false);
         m_HitPoints = m_InitialHitPoints;
     }
 
