@@ -8,7 +8,7 @@ public class CharacterStats
     public enum Stat
     {
         Level = 0,
-        Vitality = 1,       // Points
+        Vitality = 1,       // HitPoints
         Attunement = 2,     // Ability
         Endurance = 3,      // Movement Speed
         Strength = 4,       // Damage / Projectile Speed?

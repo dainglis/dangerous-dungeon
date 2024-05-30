@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public interface IEnemy
+public interface IEnemy : IVulnerable, IPoolable
 {
     public CharacterController Controller { get; }
 
@@ -30,6 +31,13 @@ public class Enemy : MonoBehaviour, IEnemy
     private string m_AnimMoveSpeedParam = "MovementSpeed";
 
     public float Speed { get => m_MovementSpeed; set => m_MovementSpeed = value; }
+
+    [Header("Gameplay Settings")]
+    [SerializeField] private float m_InitialHitPoints = 1f;
+    private float m_HitPoints;
+    public float HitPoints { get => m_HitPoints; set => m_HitPoints = value; }
+
+    public bool IsDamaged => HitPoints <= 0;
 
     protected virtual void OnValidate()
     {
@@ -72,9 +80,11 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public virtual void Hit(IProjectile projectile)
     {
-        projectile.Decoration = true;
-        projectile.Dispose();
-        Die();
+        (this as IVulnerable).HandleCollision(projectile);
+
+        Debug.Log($"Enemy {name} now has {HitPoints} hitpoints");
+
+        if (IsDamaged) { Die(); }
     }
 
     public virtual void Die()
@@ -92,4 +102,12 @@ public class Enemy : MonoBehaviour, IEnemy
 
         OnDeath?.Invoke();
     }
+
+    public void New()
+    {
+        m_HitPoints = m_InitialHitPoints;
+    }
+
+    // Currently not used, but can be called from the Object Pool
+    public void Free() { }
 }
