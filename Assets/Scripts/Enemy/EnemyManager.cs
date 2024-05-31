@@ -18,13 +18,14 @@ public class EnemyManager : MonoBehaviour
     [Tooltip("Location in world space to store pooled entities")]
     public Vector3 m_CachePosition = Vector3.down * 50;
 
+    public ParticleSystem Particles;
+
     public GameObject[] EnemyResources;
     public bool DebugMessages = false;
 
     public int ActiveEnemies { get; private set; } = 0;
 
     public bool CanCreateEnemy => ActiveEnemies < MaxEnemies;
-
 
     public IObjectPool<IEnemy> EnemyPool
     {
@@ -61,6 +62,15 @@ public class EnemyManager : MonoBehaviour
             .GetComponent<IEnemy>();
 
         enemy.Controller.enabled = false;
+
+        enemy.OnDeath += () =>
+        {
+            if (!Particles) { return; }
+
+            Particles.transform.position = enemy.Controller.transform.TransformPoint(Vector3.forward * -0.45f);
+            Particles.Play();
+        };
+
         enemy.OnDeath += () => m_EnemyPool.Release(enemy);
 
         return enemy;
