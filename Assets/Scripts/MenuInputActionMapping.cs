@@ -1,21 +1,16 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class MenuInputActionMapping : MonoBehaviour
 {
     public UnityEvent MenuButtonPressed;
 
-    public InputActionReference MenuAction;
-
-    public PlayerInput PlayerActionMap;
-
     public Transform PauseMenu;
 
-
-    public void Start()
+    public void HandleInput(CallbackContext context)
     {
-        MenuAction.action.performed += (obj) => MenuButtonPressed?.Invoke();
+        if (context.performed) { MenuButtonPressed?.Invoke(); }
     }
 
 

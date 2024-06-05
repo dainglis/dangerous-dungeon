@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -18,6 +19,7 @@ public class PlayerInputActionMapping : MonoBehaviour
 
     [Header("Projectile Settings")]
     [SerializeField] private bool m_AutoFire = false;
+    private bool m_ActiveFire = false;
     private bool m_QueueProjectile = false; // Should a single projectile be fired?
     private bool m_MarkDirty = false;       // Should recalculate local direction vectors?
     private bool m_CanFire = true;          // Can a projectile be generated?
@@ -41,6 +43,9 @@ public class PlayerInputActionMapping : MonoBehaviour
     [HideInInspector] public float ProjectileRange = 1f;
 
 
+    private bool MouseControl = true;
+
+
     private void OnValidate()
     {
         if (!m_Character) { m_Character = GetComponent<CharacterController>(); }
@@ -58,7 +63,7 @@ public class PlayerInputActionMapping : MonoBehaviour
     }
 
 
-    void Update()
+    private void Update()
     {
         if (m_MarkDirty) { CalculateDirectionVectors(); }
 
@@ -69,14 +74,13 @@ public class PlayerInputActionMapping : MonoBehaviour
         if (m_ShowDebugRays)
         {
             Debug.DrawRay(transform.position + m_Character.center, m_LocalForward, Color.red);
-            Debug.DrawLine(gameObject.transform.position, m_Target, Color.blue);
+            //Debug.DrawLine(gameObject.transform.position, m_Target, Color.blue);
         }
     }
 
-
     public void CheckProjectile()
     {
-        if (m_CanFire && (m_AutoFire || m_QueueProjectile))
+        if (m_CanFire && (m_ActiveFire || m_QueueProjectile))
         {
             LaunchProjectile();
             m_ProjectileElapsed = 0f;
@@ -98,18 +102,30 @@ public class PlayerInputActionMapping : MonoBehaviour
     /// </summary>
     public void LaunchProjectile()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (m_TargetPlane.Raycast(ray, out float distance))
+        if (MouseControl)
         {
-            m_Target = ray.GetPoint(distance);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (m_TargetPlane.Raycast(ray, out float distance))
+            {
+                m_Target = ray.GetPoint(distance);
+            }
+        }
+        else
+        {
+            m_Target = m_LocalForward * m_MoveCache.x
+                + m_LocalLeft * m_MoveCache.y;
         }
 
         // Initial projectile position, based on character
         Vector3 start = transform.position + m_Character.center;
 
         // Projectile destination, based on cursor direction and projectile range
-        Vector3 end = start + Vector3.Normalize(m_Target - start) * ProjectileRange;
+        Vector3 end =
+            MouseControl ?
+            start + Vector3.Normalize(m_Target - start) * ProjectileRange
+            : start + m_Target * ProjectileRange;
 
         m_ProjectilePool
             .Projectiles.Get()
@@ -149,19 +165,31 @@ public class PlayerInputActionMapping : MonoBehaviour
     ///     Auto-fire is enabled when the button is first pressed, then
     ///     when the button is released, auto-fire is disabled.
     /// </summary>
-    public void OnFire()
+    public void OnFire(CallbackContext context)
     {
-        m_AutoFire = !m_AutoFire;
+        if (context.started)
+        {
+            m_ActiveFire = true;
+        }
+
+        if (context.canceled)
+        {
+            m_ActiveFire = m_AutoFire;
+        }
     }
 
     /// <summary>
     ///     Toggles auto-fire when the 'ToggleFire' action is received.
     ///     State changes each time the button is pressed.
     /// </summary>
-    public void OnToggleFire()
+    public void OnToggleFire(CallbackContext context)
     {
-        OnFire();
-        m_ProjectileElapsed = 0f;
+        if (context.performed)
+        {
+            m_AutoFire = !m_AutoFire;
+            m_ActiveFire = m_ActiveFire || m_AutoFire;
+            m_ProjectileElapsed = 0f;
+        }
     }
 
     /// <summary>
@@ -169,9 +197,9 @@ public class PlayerInputActionMapping : MonoBehaviour
     ///     where the local direction vectors must be recalculated
     /// </summary>
     /// <param name="value"></param>
-    public void OnRotate(InputValue value)
+    public void OnRotate(CallbackContext context)
     {
-        float activeRotation = value.Get<float>();
+        float activeRotation = context.ReadValue<float>();
         m_MarkDirty = activeRotation != 0f;
     }
 
@@ -179,12 +207,33 @@ public class PlayerInputActionMapping : MonoBehaviour
     ///     Handle movement input
     /// </summary>
     /// <param name="value"></param>
-    public void OnMove(InputValue value)
+    public void OnMove(CallbackContext context)
     {
         // Get input from InputSystem
-        m_MoveCache = value.Get<Vector2>();
+        m_MoveCache = context.ReadValue<Vector2>();
 
         CalculateDirectionVectors();
+    }
+    Vector2 m_LookCache;
+    public void OnLook(CallbackContext context)
+    {
+        m_LookCache = context.ReadValue<Vector2>();
+
+        if (m_LookCache.Equals(Vector2.zero))
+        {
+            MouseControl = true;
+            Debug.Log("Neutral");
+        }
+        else
+        {
+            Debug.Log(m_LookCache);
+            MouseControl = false;
+        }
+    }
+
+    public void ControlsChanged(PlayerInput input)
+    {
+        Debug.Log("Handle controls changed");
     }
 
     #endregion

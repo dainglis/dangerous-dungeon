@@ -1,6 +1,6 @@
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 
 /// <summary>
@@ -12,11 +12,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CinemachineVirtualCameraBase))]
 public class CameraInputActionMapping : MonoBehaviour
 {
-
-    [Header("Input Action References")]
-    [SerializeField] private InputActionReference m_RotateAction;
-    [SerializeField] private InputActionReference m_ZoomAction;
-
     [Header("Camera Height Boundaries")]
     public float HeightMax = 35; // unused
     public float HeightMin = 10;
@@ -26,52 +21,33 @@ public class CameraInputActionMapping : MonoBehaviour
     public float ZoomMin = 3;
     public float ZoomSensitivity = 3;
 
-
     private CinemachineVirtualCamera cam;
     private CinemachineOrbitalTransposer transposer;
-
-    private InputAction m_Rotate;
-    private InputAction m_Zoom;
 
     private void OnValidate()
     {
         if (!cam) { cam = GetComponent<CinemachineVirtualCamera>(); }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         OnValidate();
         transposer = cam.GetCinemachineComponent<CinemachineOrbitalTransposer>();
-        if (transposer == null )
+        if (transposer == null)
         {
             Debug.LogWarning("No CinemachineOrbitalTransposer to handle rotations");
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnRotate(CallbackContext context)
     {
-        m_Rotate = m_RotateAction.action;
-        m_Zoom = m_ZoomAction.action;
-
-        DoRotate();
-
-        DoZoom();
+        transposer.m_XAxis.m_InputAxisValue = context.ReadValue<float>();
     }
 
-    private void DoRotate()
+    public void OnZoom(CallbackContext context)
     {
-        if (m_Rotate == null) { return; }
-        transposer.m_XAxis.m_InputAxisValue = m_Rotate.ReadValue<float>();
-    }
+        float zoomInput = context.ReadValue<float>();
 
-
-    private void DoZoom()
-    {
-        if (m_Zoom == null) { return; }
-
-        float zoomInput = m_Zoom.ReadValue<float>();
         if (zoomInput != 0f)
         {
             cam.m_Lens.OrthographicSize = Mathf.Clamp(
@@ -80,6 +56,5 @@ public class CameraInputActionMapping : MonoBehaviour
                 ZoomMax);
             // TODO update camera height based on zoom
         }
-
     }
 }
