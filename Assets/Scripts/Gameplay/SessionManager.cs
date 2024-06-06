@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using static UnityEngine.InputSystem.InputAction;
 
 public class SessionManager : MonoBehaviour
 {
@@ -59,6 +60,11 @@ public class SessionManager : MonoBehaviour
                 Pause();
                 break;
         }
+    }
+
+    public void HandleInput(CallbackContext context)
+    {
+        if (context.performed) { Toggle(); }
     }
 
     public void Toggle()

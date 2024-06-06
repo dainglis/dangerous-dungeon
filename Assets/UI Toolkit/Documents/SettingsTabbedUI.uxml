@@ -1,0 +1,15 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="container" style="flex-grow: 1;">
+        <engine:TabView view-data-key="TabbedMenu" name="tabbedView" style="position: absolute; top: 0; bottom: 0; right: 0; left: 0; flex-grow: 1; align-items: center;">
+            <engine:Tab label="Info" name="tabInfo" view-data-key="InfoTab">
+                <engine:Label text="This is content for the Info panel" />
+            </engine:Tab>
+            <engine:Tab label="Graphics" name="tabGraphics" view-data-key="GraphicsTab">
+                <engine:Label text="This is some content for Graphics settings" />
+            </engine:Tab>
+            <engine:Tab label="Other" name="tabOther" view-data-key="OtherTab">
+                <engine:Label text="Placeholder" />
+            </engine:Tab>
+        </engine:TabView>
+    </engine:VisualElement>
+</engine:UXML>

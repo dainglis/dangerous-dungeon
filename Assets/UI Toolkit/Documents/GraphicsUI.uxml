@@ -1,7 +1,10 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:VisualElement name="container" style="flex-grow: 1;">
-        <engine:VisualElement name="mainBackground" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.43);" />
-        <engine:VisualElement name="actions" style="flex-grow: initial; flex-direction: row; justify-content: center; flex-shrink: 1; align-items: center; margin-top: auto; margin-bottom: 12px;">
+    <engine:VisualElement name="container" style="flex-grow: 1; margin-top: 6px; margin-right: 6px; margin-bottom: 6px; margin-left: 6px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+        <engine:Label text="Graphics Settings" style="color: rgb(221, 221, 221); -unity-text-align: upper-center;" />
+        <engine:VisualElement name="separator" style="height: 2px; background-color: rgb(221, 221, 221); margin-top: 6px; margin-bottom: 6px;" />
+        <engine:DropdownField label="Display Resolution" name="dropdownResolution" style="color: rgb(221, 221, 221);" />
+        <engine:DropdownField label="Quality" name="dropdownQuality" style="color: rgb(221, 221, 221);" />
+        <engine:VisualElement name="actions" style="flex-grow: initial; flex-direction: row; justify-content: center; flex-shrink: 1; align-items: center; margin-top: auto;">
             <engine:Button text="Cancel" name="buttonCancel" />
             <engine:Button text="Confirm" name="buttonConfirm" />
         </engine:VisualElement>
