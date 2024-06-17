@@ -1,0 +1,58 @@
+.unity-tab__header {
+    flex-grow: 1;
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    width: 0;
+    justify-content: center;
+    background-image: url("project://database/Assets/Sprites/UI/Panels/panel-transparent-center-009.png?fileID=1156830282&guid=9a8dbade463999c4b8380dea3e411375&type=3#panel-transparent-center-009_0");
+    -unity-background-image-tint-color: rgb(176, 176, 176);
+    -unity-background-scale-mode: scale-and-crop;
+    -unity-font-definition: resource('Fonts/Roboto-Regular');
+    font-size: 20px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 0 rgb(0, 0, 0);
+    height: 56px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+}
+
+.unity-tab-view__header-container {
+}
+
+.unity-tab-view {
+    -unity-font-definition: resource('Fonts/Roboto-Regular');
+    flex-grow: 1;
+}
+
+.unity-tab {
+}
+
+.unity-tab__header-underline {
+    display: none;
+}
+
+.unity-tab__header:hover {
+    -unity-background-image-tint-color: rgb(229, 229, 229);
+}
+
+.unity-tab__header:checked {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.unity-tab__content-container {
+    margin-top: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    margin-left: 6px;
+}
+
+.list-element {
+    font-size: 18px;
+}

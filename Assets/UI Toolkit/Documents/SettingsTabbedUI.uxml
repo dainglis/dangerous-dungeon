@@ -1,15 +1,22 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/GlobalStyle.uss?fileID=7433441132597879392&amp;guid=8cc8745940a12ce45be90544a3a1f0dd&amp;type=3#GlobalStyle" />
+    <Style src="project://database/Assets/UI%20Toolkit/StyleSheets/TabbedViewStyle.uss?fileID=7433441132597879392&amp;guid=e00b941f6fb4c9f4da911ac08aa3a396&amp;type=3#TabbedViewStyle" />
     <engine:VisualElement name="container" style="flex-grow: 1;">
-        <engine:TabView view-data-key="TabbedMenu" name="tabbedView" style="position: absolute; top: 0; bottom: 0; right: 0; left: 0; flex-grow: 1; align-items: center;">
-            <engine:Tab label="Info" name="tabInfo" view-data-key="InfoTab">
+        <engine:TabView view-data-key="TabbedMenu" name="tabbedView">
+            <engine:Tab label="Gameplay" name="tabGameplay" view-data-key="InfoTab">
                 <engine:Label text="This is content for the Info panel" />
             </engine:Tab>
             <engine:Tab label="Graphics" name="tabGraphics" view-data-key="GraphicsTab">
-                <engine:Label text="This is some content for Graphics settings" />
+                <engine:Label text="This is some content for Graphics settings" style="color: rgb(255, 255, 255);" />
+                <engine:DropdownField label="Quality" name="dropdownQuality" class="unity-text-shadow list-element" />
             </engine:Tab>
-            <engine:Tab label="Other" name="tabOther" view-data-key="OtherTab">
+            <engine:Tab label="Info" name="tabInfo" view-data-key="OtherTab">
                 <engine:Label text="Placeholder" />
             </engine:Tab>
         </engine:TabView>
+        <engine:VisualElement name="actions" style="flex-grow: initial; flex-direction: row; justify-content: space-evenly; flex-shrink: 1; align-items: center; margin-top: auto; margin-bottom: 6px;">
+            <engine:Button text="Close" name="buttonClose" style="width: 180px;" />
+            <engine:Button text="Apply" name="buttonApply" style="width: 180px;" />
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

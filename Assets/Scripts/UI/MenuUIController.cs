@@ -7,16 +7,14 @@ using UnityEngine.UIElements;
 ///     UIElements controller for the top-level "menu" Document.
 /// </summary>
 /// <remarks>
-///     Provides control to the nested <see cref="GraphicsUIContent"/> controller
+///     Provides control to the nested <see cref="SettingsUIContent"/> controller
 /// </remarks>
 public class MenuUIController : MonoBehaviour
 {
     /// <summary>
     ///     Inner content controller. Soon will become a tabbed layout
     /// </summary>
-    private readonly GraphicsUIContent graphicsUI = new();
-
-    
+    private readonly SettingsUIContent settingsContent = new();
 
     /// <summary> The root visual element from the <see cref="Document"/> </summary>
     private VisualElement root;
@@ -25,17 +23,16 @@ public class MenuUIController : MonoBehaviour
     private VisualElement menuActions;
 
     /// <summary> Embedded visual element displaying settings </summary>
-    private VisualElement graphicsUIElement;
+    private VisualElement settingsTabbedUI;
 
     // Menu actions
-    private Button settings;
-    private Button restart;
-    private Button quit;
+    private Button settingsButton;
+    private Button restartButton;
+    private Button quitButton;
 
+
+    [Header("Documents")]
     public UIDocument Document;
-
-    [Header("Containers")]
-    public GameObject Menu;
 
     [Header("Events")]
     public UnityEvent Restart;
@@ -47,29 +44,29 @@ public class MenuUIController : MonoBehaviour
         root = Document.rootVisualElement;
 
         // Reference buttons
-        settings = root.Q<Button>("buttonSettings");
-        restart = root.Q<Button>("buttonRestart");
-        quit = root.Q<Button>("buttonQuit");
+        settingsButton = root.Q<Button>("buttonSettings");
+        restartButton = root.Q<Button>("buttonRestart");
+        quitButton = root.Q<Button>("buttonQuit");
 
         menuActions = root.Q<VisualElement>("actions");
-        graphicsUIElement = root.Q<VisualElement>("graphicsMenu");
+        settingsTabbedUI = root.Q<VisualElement>("settingsTabbedUI");
 
-        settings.clicked += OnSettings;
-        restart.clicked += OnRestart;
-        quit.clicked += OnQuit;
+        settingsButton.clicked += OnSettings;
+        restartButton.clicked += OnRestart;
+        quitButton.clicked += OnQuit;
 
-        graphicsUI.enabled += HideActions;
-        graphicsUI.disabled += ShowActions;
+        settingsContent.Enabled += HideActions;
+        settingsContent.Disabled += ShowActions;
     }
 
     public virtual void OnDisable()
     {
-        settings.clicked -= OnSettings;
-        restart.clicked -= OnRestart;
-        quit.clicked -= OnQuit;
+        settingsButton.clicked -= OnSettings;
+        restartButton.clicked -= OnRestart;
+        quitButton.clicked -= OnQuit;
 
-        graphicsUI.enabled -= HideActions;
-        graphicsUI.disabled -= ShowActions;
+        settingsContent.Enabled -= HideActions;
+        settingsContent.Disabled -= ShowActions;
     }
 
     private void OnRestart() => Restart?.Invoke();
@@ -78,19 +75,20 @@ public class MenuUIController : MonoBehaviour
 
     public void Open()
     {
-        if (!Menu) { return; }
-        Menu.SetActive(true);
+        if (!Document) { return; }
+        Document.gameObject.SetActive(true);
     }
 
     public void Close()
     {
-        if (!Menu) { return; }
-        Menu.SetActive(false);
+        if (!Document) { return; }
+        Document.gameObject.SetActive(false);
     }
 
     public void OnSettings()
     {
-        graphicsUI.Enable(graphicsUIElement);
+        settingsTabbedUI.style.display = DisplayStyle.Flex;
+        settingsContent.Enable(settingsTabbedUI);
     }
 
     private void ShowActions()
