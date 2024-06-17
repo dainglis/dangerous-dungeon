@@ -22,6 +22,15 @@ public class Player : MonoBehaviour
         ReadStats();
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+
+        // Handle collision with Collectible items
+        if (!other.TryGetComponent<ICollectible>(out var collectible)) { return; }
+
+        collectible.Collect();
+    }
+
 
     /// <summary>
     ///     Maps player stats to their appropriate impact on 
