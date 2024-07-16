@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface IEnemy : IVulnerable, IPoolable
 {
@@ -42,6 +43,12 @@ public class Enemy : MonoBehaviour, IEnemy
     public float HitPoints { get => m_HitPoints; set => m_HitPoints = value; }
 
     public bool IsDamaged => HitPoints <= 0;
+
+
+    // TODO 
+    public UnityEvent Damaged => throw new NotImplementedException();
+
+    public UnityEvent Restored => throw new NotImplementedException();
 
     protected virtual void OnValidate()
     {

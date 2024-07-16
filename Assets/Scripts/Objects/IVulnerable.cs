@@ -1,8 +1,14 @@
+using UnityEngine.Events;
+
 public interface IVulnerable
 {
     public float HitPoints { get; set; }
 
-    public bool IsDamaged => HitPoints <= 0;
+    public bool IsDamaged { get; }
+
+    public UnityEvent Damaged { get; }
+
+    public UnityEvent Restored { get; }
 
     public void HandleCollision(IProjectile projectile)
     {
